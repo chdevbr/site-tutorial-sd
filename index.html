@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto de Sistemas Digitais - Console Arcade Dual</title>
+    <meta name="description" content="Documentação do Console Arcade Dual desenvolvido com Arduino, focado em otimização de memória e jogos retrô.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="public/icon.svg" type="image/svg+xml">
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span>DualArcade</span>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#inicio" class="nav-link">Início</a></li>
+                <li><a href="#descricao" class="nav-link">Descrição</a></li>
+                <li><a href="#esquema" class="nav-link">Hardware</a></li>
+                <li><a href="#autores" class="nav-link">Equipe</a></li>
+                <li><a href="#componentes" class="nav-link">Componentes</a></li>
+                <li><a href="#codigo" class="nav-link">Código</a></li>
+                <li><a href="#licoes" class="nav-link">Lições (STAR)</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="inicio" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Console Dual Arcade com Arduino</h1>
+                <p class="hero-description">
+                    Um sistema de jogos retrô portátil capaz de rodar dois jogos distintos ("Witch Hat" e "Darwin Runner") 
+                    em um único microcontrolador, demonstrando técnicas avançadas de otimização de memória RAM.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#descricao" class="btn btn-primary">Ver Projeto</a>
+                    <a href="#codigo" class="btn btn-secondary">Acessar Código</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="descricao" class="section">
+        <div class="container">
+            <h2 class="section-title">Descrição do Projeto</h2>
+            
+            <div class="description-grid">
+                <div class="description-card">
+                    <div class="card-icon">🎮</div>
+                    <h3>O Desafio</h3>
+                    <p>
+                        O objetivo principal foi criar um console funcional utilizando o Arduino Uno, que possui apenas 
+                        2KB de memória RAM. O desafio aumentou ao decidirmos integrar dois jogos completos com gráficos 
+                        em um display OLED, exigindo uma gestão rigorosa de recursos.
+                    </p>
+                </div>
+
+                <div class="description-card">
+                    <div class="card-icon">⚡</div>
+                    <h3>A Solução</h3>
+                    <p>
+                        Desenvolvemos o "Dual Arcade", que permite ao usuário selecionar entre dois jogos através de um menu.
+                        Utilizamos técnicas de otimização de variáveis (substituindo <code>int</code> por <code>uint8_t</code>) 
+                        e renderização via Page Buffer para evitar o estouro de memória e travamentos.
+                    </p>
+                </div>
+
+                <div class="description-card">
+                    <div class="card-icon">🎓</div>
+                    <h3>Contexto Acadêmico</h3>
+                    <p>
+                        Projeto da disciplina de Sistemas Digitais e Introdução à Computação na CESAR School. 
+                        O foco foi aplicar conceitos de lógica de programação, circuitos digitais e, principalmente, 
+                        entender as limitações físicas de hardware embarcado.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="esquema" class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">Esquema de Hardware</h2>
+            <div class="scheme-container">
+                
+                <img src="public/Hardware.jpeg" 
+                     alt="Esquema de ligação: Arduino conectado ao OLED via I2C, Joystick nas portas analógicas e Botão no pino 10" 
+                     class="scheme-image">
+                <p class="scheme-description">
+                    O sistema utiliza comunicação I2C (Pinos A4/A5) para enviar dados gráficos ao display OLED SSD1306. 
+                    O Joystick é lido pelas portas analógicas A0 e A2 apenas para navegação do menu, enquanto um botão 
+                    dedicado no Pino Digital 10 (Input Pullup) gerencia as ações críticas (pular/confirmar) para evitar delay.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="keywords" class="section">
+        <div class="container">
+            <h2 class="section-title">Tecnologias</h2>
+            <div class="keywords-container">
+                <span class="keyword">Arduino Uno</span>
+                <span class="keyword">OLED SSD1306</span>
+                <span class="keyword">Otimização RAM</span>
+                <span class="keyword">C++</span>
+                <span class="keyword">U8g2 Library</span>
+                <span class="keyword">Tinkercad</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="autores" class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">Equipe de Desenvolvimento</h2>
+            <div class="authors-grid">
+                <div class="author-card">
+                    <img src="public/carlos.jpeg" alt="Você" class="author-image">
+                    <h3 class="author-name">Carlos Henrique</h3>
+                    <p class="author-role">Desenvolvedor Full Stack & Hardware</p>
+                    <div class="author-links">
+                        <a href="https://www.linkedin.com/in/carlos-henrique-05782437b" class="author-link">LinkedIn</a>
+                    </div>
+                </div>
+
+                <div class="author-card">
+                    <img src="public/abelardo.jpeg" alt="Colega 1" class="author-image">
+                    <h3 class="author-name">Arthur Abelardo</h3>
+                    <p class="author-role">Desenvolvedor Back-End & Montagem</p>
+                    <div class="author-links">
+                        <a href="https://www.linkedin.com/in/arthur-abelardo-10478a37b" class="author-link">LinkedIn</a>
+                    </div>
+                </div>
+
+                <div class="author-card">
+                    <img src="public/danilo.jpeg" alt="Colega 2" class="author-image">
+                    <h3 class="author-name">Danilo Diniz</h3>
+                    <p class="author-role">Desenvolvedor Front-End & Hardware</p>
+                    <div class="author-links">
+                        <a href="https://www.linkedin.com/in/danilo-diniz-8559432b8" class="author-link">LinkedIn</a>
+                    </div>
+                </div>
+
+                <div class="author-card">
+                    <img src="public/roberto.jpeg" alt="Colega 2" class="author-image">
+                    <h3 class="author-name">Roberto Henrique</h3>
+                    <p class="author-role">Desenvolvedor Back-End & Montagem</p>
+                    <div class="author-links">
+                        <a href="https://www.linkedin.com/in/roberto-freitas-37290b236/" class="author-link">LinkedIn</a>
+                    </div>
+                </div>
+
+                <div class="author-card">
+                    <img src="public/gabriel.jpeg" alt="Colega 2" class="author-image">
+                    <h3 class="author-name">Gabriel Andrade</h3>
+                    <p class="author-role">Desenvolvedor Back-End & Montagem</p>
+                    <div class="author-links">
+                        <a href="https://www.linkedin.com/in/gabriel-andrade-0542ba1ab" class="author-link">LinkedIn</a>
+                    </div>
+                </div>
+
+                <div class="author-card">
+                    <img src="public/alisson.jpeg" alt="Colega 2" class="author-image">
+                    <h3 class="author-name">Alisson Santana</h3>
+                    <p class="author-role">Desenvolvedor Back-End & Hardware</p>
+                    <div class="author-links">
+                        <a href="https://www.linkedin.com/in/alisson-santana-359597270/" class="author-link">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="componentes" class="section">
+        <div class="container">
+            <h2 class="section-title">Lista de Materiais</h2>
+            <div class="table-responsive">
+                <table class="components-table">
+                    <thead>
+                        <tr>
+                            <th>Componente</th>
+                            <th>Qtd</th>
+                            <th>Função</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Arduino Uno R3</strong></td>
+                            <td>1</td>
+                            <td>Processamento central e lógica dos jogos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Display OLED 0.96" I2C</strong></td>
+                            <td>1</td>
+                            <td>Exibição gráfica (SSD1306)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Módulo Joystick KY-023</strong></td>
+                            <td>1</td>
+                            <td>Navegação do Menu (Eixos X/Y)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Push Button (Botão Arcade)</strong></td>
+                            <td>1</td>
+                            <td>Ação de Pular e Confirmar (Pino 10)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Buzzer Ativo 5V</strong></td>
+                            <td>1</td>
+                            <td>Feedback sonoro e efeitos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>LED (Vermelho)</strong></td>
+                            <td>1</td>
+                            <td>Indicação visual de status e "Game Over"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Resistores 220Ω</strong></td>
+                            <td>1</td>
+                            <td>Proteção dos LEDs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Protoboard e Jumpers</strong></td>
+                            <td>-</td>
+                            <td>Conexões do circuito</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="software" class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">Softwares e Ferramentas Utilizadas</h2>
+            <div class="software-grid">
+                <div class="software-card">
+                    <div class="software-icon">💻</div>
+                    <h3>Arduino IDE</h3>
+                    <span class="software-version">Versão 2.3.2</span>
+                    <p>Ambiente de desenvolvimento utilizado para escrever e carregar o código.</p>
+                </div>
+                <div class="software-card">
+                    <div class="software-icon">📚</div>
+                    <h3>Biblioteca U8g2</h3>
+                    <span class="software-version">Versão Mais Recente</span>
+                    <p>Essencial para renderização gráfica no display OLED SSD1306.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="passo-a-passo" class="section">
+        <div class="container">
+            <h2 class="section-title">Passo a Passo da Montagem</h2>
+            
+            <div class="carousel-container">
+                <button class="carousel-btn carousel-prev" id="carouselPrev">‹</button>
+                <button class="carousel-btn carousel-next" id="carouselNext">›</button>
+                
+                <div class="carousel-track-container">
+                    <ul class="carousel-track" id="carouselTrack">
+                        <li class="carousel-slide current-slide">
+                            <div class="step-card">
+                                <div class="step-number">Passo 1</div>
+                                <h3>Separação dos Materiais</h3>
+                                <p>Organize o Arduino, Protoboard, OLED, Joystick, Botão e Jumpers. Certifique-se de que a protoboard está limpa.</p>
+                            </div>
+                        </li>
+                        
+                        <li class="carousel-slide">
+                            <div class="step-card">
+                                <div class="step-number">Passo 2</div>
+                                <h3>Conexão do Display OLED</h3>
+                                <p>Conecte o VCC no 5V, GND no GND. Os pinos de comunicação I2C vão no Arduino: SDA no A4 e SCL no A5.</p>
+                            </div>
+                        </li>
+
+                        <li class="carousel-slide">
+                            <div class="step-card">
+                                <div class="step-number">Passo 3</div>
+                                <h3>Conexão do Joystick (Menu)</h3>
+                                <p>Conecte os eixos VRx no pino A2 e VRy no pino A0. IMPORTANTE: Não ligue o pino SW do joystick.</p>
+                            </div>
+                        </li>
+
+                        <li class="carousel-slide">
+                            <div class="step-card">
+                                <div class="step-number">Passo 4</div>
+                                <h3>Botão de Ação</h3>
+                                <p>Conecte um lado do botão no GND e o outro lado no Pino Digital 10. Este será o botão de Pular/Confirmar.</p>
+                            </div>
+                        </li>
+
+                         <li class="carousel-slide">
+                            <div class="step-card">
+                                <div class="step-number">Passo 5</div>
+                                <h3>Upload do Código</h3>
+                                <p>Conecte o Arduino no PC, abra a IDE, instale a biblioteca U8g2 e carregue o código fornecido.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="carousel-indicators" id="carouselIndicators"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="codigo" class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">Código Fonte Final (Otimizado)</h2>
+            <p style="color: #ccc; margin-bottom: 20px;">
+                Abaixo está a versão final do código, utilizando <code>uint8_t</code> para economia de memória e lógica de dois jogos integrados.
+            </p>
+            
+            <div class="code-content">
+                <div class="code-panel active">
+<pre><code>
+#include <Arduino.h>
+#include <U8g2lib.h>
+#include <Wire.h>
+
+// --- DISPLAY (full buffer para máxima fluidez) ---
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
+
+// --- PINOS ---
+#define PIN_MENU_Y    A0
+#define PIN_MENU_X    A2
+#define PIN_BOTAO_ACAO 10
+
+// --- SAÍDAS ---
+#define BUZZER      3
+#define LED1        4
+#define LED2        5
+#define LED3        6
+
+#define MENU_SELECT 0
+#define GAME_WITCH  1
+#define GAME_DINO   2
+#define GAME_OVER   3
+
+// --- SISTEMA ---
+uint8_t systemState = MENU_SELECT;
+uint8_t selectedGame = 0;
+uint8_t score = 0;
+uint8_t highScoreWitch = 0;
+uint8_t highScoreDino = 0;
+
+// --- CONTROLE ---
+bool ultimoEstadoBotao = HIGH;   // estado anterior (amostrado)
+bool acaoClique = false;         // evento de clique (borda detectada)
+bool newRecord = false;
+bool scoreLock = false;
+
+// --- INPUT BUFFER / JUMP ---
+bool jumpRequested = false;      // buffer do pulo do Dino
+
+// --- FPS ---
+unsigned long lastFrameTime = 0;
+const uint8_t frameInterval = 10; // mais fluido (~100 FPS teórico)
+
+// CHAPÉU DE BRUXA (16x14)
+#define HAT_W 16
+#define HAT_H 14
+const unsigned char spriteHat[] PROGMEM = {
+  0x00,0x00,0x00,0x00,0xC0,0x01,0xE0,0x03,
+  0xF0,0x07,0xF8,0x0F,0xFC,0x1F,0xFC,0x1F,
+  0x78,0x0F,0x38,0x0E,0x1C,0x1C,0xFE,0x3F,
+  0xFF,0x7F,0xFF,0x7F
+};
+
+// DINOSSAURO (14x14)
+#define DINO_W 14
+#define DINO_H 14
+const unsigned char spriteDino[] PROGMEM = {
+  0x00,0x00,0x00,0x00,0xE0,0x01,0xF0,0x03,
+  0xF8,0x07,0xF8,0x07,0xFC,0x0F,0xFC,0x0F,
+  0xF8,0x07,0x70,0x00,0x50,0x00,0x50,0x00,
+  0x88,0x00,0x88,0x00
+};
+
+// CACTO (8x12)
+#define CACTUS_W 8
+#define CACTUS_H 12
+const unsigned char spriteCactus[] PROGMEM = {
+  0x18,0x18,0x18,0x5A,0x5A,0xFF,0xFF,0x18,
+  0x18,0x18,0x18,0x3C
+};
+
+// WITCH
+uint8_t witch_speed = 4;
+#define COL_WIDTH 10
+#define COL_GAP 28
+#define HAT_X 24
+#define W_GRAVITY 1
+#define W_JUMP -5
+int8_t w_hatY;
+int8_t w_velocity;
+int w_colX;
+uint8_t w_colGapY;
+
+// DINO
+#define DINO_X 10
+#define DINO_FLOOR 48
+
+int8_t d_y;
+int8_t d_vel;
+int8_t d_cactusX;
+uint8_t dino_speed = 6;
+
+// continua...
+// (Consulte o código completo fornecido anteriormente para o restante)
+</code></pre>
+                </div>
+            </div>
+            
+            <div class="code-links">
+                <a href="https://github.com/chdevbr/site-projeto-sd.git" class="btn btn-primary">
+                    Ver Código Completo no GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="download" class="section">
+        <div class="container">
+            <h2 class="section-title">Download do Projeto</h2>
+            <div class="download-card">
+                <div class="download-icon">📦</div>
+                <h3>Pacote Completo (.zip)</h3>
+                <p>
+                    Baixe todos os arquivos necessários: código fonte (.ino), diagrama de ligações, 
+                    bibliotecas necessárias e o manual de instruções.
+                </p>
+                <a href="public/DualArcade_Projeto.zip" download class="btn btn-primary btn-large">
+                    Baixar Arquivos do Projeto
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="video" class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">Vídeo de Demonstração</h2>
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <iframe 
+                        width="560" 
+                        height="315" 
+                        src="https://www.youtube.com/embed/SEU_ID_DO_VIDEO" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <p class="video-description">
+                    Nossa equipe demonstrando o Console Arcade Dual em funcionamento, alternando entre os jogos 
+                    e explicando a solução de otimização de memória.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="licoes" class="section">
+        <div class="container">
+            <h2 class="section-title">Lições Aprendidas (Método STAR)</h2>
+            
+            <div class="lessons-grid">
+                <div class="lesson-section">
+                    <h3 class="lesson-title">O Problema da Memória RAM</h3>
+                    
+                    <div class="problem-card">
+                        <h4>Situação (S)</h4>
+                        <p class="problem-description">
+                            Nosso projeto consistia em criar um "Dual Arcade" no Arduino Uno. Tínhamos o código do primeiro jogo 
+                            rodando bem, mas precisávamos integrar um segundo jogo ("Darwin Runner").
+                        </p>
+                    </div>
+
+                    <div class="problem-card">
+                        <h4>Tarefa (T)</h4>
+                        <p class="problem-description">
+                            Ao unir os códigos, o sistema colapsou. A tela congelava e o input lag tornava o jogo injogável. 
+                            Precisávamos fazer dois jogos gráficos caberem em 2KB de RAM sem travar.
+                        </p>
+                    </div>
+
+                    <div class="problem-card">
+                        <h4>Ação (A)</h4>
+                        <p class="problem-description">
+                            Com ajuda do professor, analisamos o código e percebemos o uso excessivo de variáveis <code>int</code> (2 bytes). 
+                            Refatoramos todo o código substituindo por <code>uint8_t</code> (1 byte) para valores até 255 e <code>int8_t</code> 
+                            para coordenadas pequenas. Também separamos fisicamente o botão de ação do analógico para evitar ruído.
+                        </p>
+                    </div>
+
+                     <div class="problem-card" style="border-left: 4px solid #4CAF50;">
+                        <h4>Resultado (R)</h4>
+                        <p class="problem-description">
+                            O sistema estabilizou completamente! Conseguimos rodar os dois jogos com fluidez, implementar um menu 
+                            de seleção e até adicionar um modo de dificuldade progressiva. O projeto foi concluído com sucesso e 
+                            serviu como uma grande lição sobre gestão de recursos em sistemas embarcados.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Dual Arcade Project</h4>
+                    <p>Desenvolvido por estudantes de ADS na CESAR School.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Início</a></li>
+                        <li><a href="#codigo">Código</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Equipe Dual Arcade.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
