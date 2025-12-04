@@ -332,58 +332,49 @@
 #include <U8g2lib.h>
 #include <Wire.h>
 
-// --- DISPLAY (full buffer para máxima fluidez) ---
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
 
-// --- PINOS ---
-#define PIN_MENU_Y    A0
-#define PIN_MENU_X    A2
-#define PIN_BOTAO_ACAO 10
+#define PINO_JOYSTICK_Y   A0
+#define PINO_JOYSTICK_X   A2
+#define PINO_BOTAO_ACAO   10
 
-// --- SAÍDAS ---
-#define BUZZER      3
-#define LED1        4
-#define LED2        5
-#define LED3        6
+#define BUZZER       3
+#define LED1         4
+#define LED2         5
+#define LED3         6
 
-#define MENU_SELECT 0
-#define GAME_WITCH  1
-#define GAME_DINO   2
-#define GAME_OVER   3
+#define MENU_SELECAO 0
+#define JOGO_BRUXA   1
+#define JOGO_DINO    2
+#define FIM_DE_JOGO  3
 
-// --- SISTEMA ---
-uint8_t systemState = MENU_SELECT;
-uint8_t selectedGame = 0;
-uint8_t score = 0;
-uint8_t highScoreWitch = 0;
-uint8_t highScoreDino = 0;
+uint8_t estadoSistema = MENU_SELECAO;
+uint8_t jogoSelecionado = 0;
+uint8_t pontuacao = 0;
+uint8_t recordeBruxa = 0;
+uint8_t recordeDino = 0;
 
-// --- CONTROLE ---
-bool ultimoEstadoBotao = HIGH;   // estado anterior (amostrado)
-bool acaoClique = false;         // evento de clique (borda detectada)
-bool newRecord = false;
-bool scoreLock = false;
+bool ultimoEstadoBotao = HIGH;
+bool acaoClique = false;
+bool novoRecorde = false;
+bool pontuouNesteObstaculo = false;
 
-// --- INPUT BUFFER / JUMP ---
-bool jumpRequested = false;      // buffer do pulo do Dino
+bool puloSolicitado = false;
 
-// --- FPS ---
-unsigned long lastFrameTime = 0;
-const uint8_t frameInterval = 10; // mais fluido (~100 FPS teórico)
+unsigned long tempoUltimoQuadro = 0;
+const uint8_t intervaloQuadro = 10;
 
-// CHAPÉU DE BRUXA (16x14)
-#define HAT_W 16
-#define HAT_H 14
-const unsigned char spriteHat[] PROGMEM = {
+#define CHAPEU_L 16
+#define CHAPEU_A 14
+const unsigned char spriteChapeu[] PROGMEM = {
   0x00,0x00,0x00,0x00,0xC0,0x01,0xE0,0x03,
   0xF0,0x07,0xF8,0x0F,0xFC,0x1F,0xFC,0x1F,
   0x78,0x0F,0x38,0x0E,0x1C,0x1C,0xFE,0x3F,
   0xFF,0x7F,0xFF,0x7F
 };
 
-// DINOSSAURO (14x14)
-#define DINO_W 14
-#define DINO_H 14
+#define DINO_L 14
+#define DINO_A 14
 const unsigned char spriteDino[] PROGMEM = {
   0x00,0x00,0x00,0x00,0xE0,0x01,0xF0,0x03,
   0xF8,0x07,0xF8,0x07,0xFC,0x0F,0xFC,0x0F,
@@ -391,34 +382,32 @@ const unsigned char spriteDino[] PROGMEM = {
   0x88,0x00,0x88,0x00
 };
 
-// CACTO (8x12)
-#define CACTUS_W 8
-#define CACTUS_H 12
-const unsigned char spriteCactus[] PROGMEM = {
+#define CACTO_L 8
+#define CACTO_A 12
+const unsigned char spriteCacto[] PROGMEM = {
   0x18,0x18,0x18,0x5A,0x5A,0xFF,0xFF,0x18,
   0x18,0x18,0x18,0x3C
 };
 
-// WITCH
-uint8_t witch_speed = 4;
-#define COL_WIDTH 10
-#define COL_GAP 28
-#define HAT_X 24
-#define W_GRAVITY 1
-#define W_JUMP -5
-int8_t w_hatY;
-int8_t w_velocity;
-int w_colX;
-uint8_t w_colGapY;
+uint8_t velocidadeGlobalBruxa = 4;
+#define LARGURA_COLUNA 10
+#define ESPACO_ENTRE_COLUNAS 28
+#define POSICAO_X_CHAPEU 24
+#define GRAVIDADE_BRUXA 1
+#define FORCA_PULO_BRUXA -5
 
-// DINO
-#define DINO_X 10
-#define DINO_FLOOR 48
+int8_t bruxaY;
+int8_t bruxaVelocidadeY;
+int colunaX;
+uint8_t colunaBrechaY;
 
-int8_t d_y;
-int8_t d_vel;
-int8_t d_cactusX;
-uint8_t dino_speed = 6;
+#define POSICAO_X_DINO 10
+#define CHAO_DINO 48
+
+int8_t dinoY;
+int8_t dinoVelocidadeY;
+int8_t cactoX;
+uint8_t velocidadeGlobalDino = 6;
 
 // continua...
 // (Consulte o código completo fornecido anteriormente para o restante)
@@ -427,7 +416,7 @@ uint8_t dino_speed = 6;
             </div>
             
             <div class="code-links">
-                <a href="https://github.com/chdevbr/site-tutorial-sd.git" class="btn btn-primary">
+                <a href="https://github.com/chdevbr/codigo-dualarcade.git" class="btn btn-primary">
                     Ver Código Completo no GitHub
                 </a>
             </div>
